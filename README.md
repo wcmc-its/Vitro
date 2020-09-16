@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # What is Vitro?
 Vitro is a general-purpose web-based ontology and instance editor with customizable public browsing. 
 
@@ -21,4 +20,3 @@ For more information, contact the [VIVO community](http://www.vivoweb.org/suppor
 =======
 # Vitro
 This is WCM implementation of VIVO project
->>>>>>> 21b0da3477b75f180f6e1459b23d347d3ab17687
