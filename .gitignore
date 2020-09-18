@@ -1,7 +1,7 @@
-<<<<<<< HEAD
 /webapp/.build/
-/.classpath
-/.project
+.classpath
+.project
+org.eclipse*
 /.settings
 /bin/
 /webapp/config/deploy.properties
@@ -44,4 +44,4 @@ utilities/sdb_to_tdb/.work
 hs_err_pid*
 
 .svn*
->>>>>>> 21b0da3477b75f180f6e1459b23d347d3ab17687
+
