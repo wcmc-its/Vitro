@@ -237,7 +237,9 @@ public class UpdateDocumentWorkUnit implements Runnable {
 			List<DataPropertyStatement> stmts = ind.getDataPropertyStatements();
 			if (stmts != null) {
 				for (DataPropertyStatement stmt : stmts) {
-					if (!stmt.getDatapropURI().equals(URI_RDFS_LABEL)) {
+					if (!stmt.getDatapropURI().equals(URI_RDFS_LABEL) 
+						|| !stmt.getDatapropURI().equals("http://purl.org/spar/c4o/hasGlobalCitationFrequency")
+						|| !stmt.getDatapropURI().equals("http://purl.org/spar/c4o/GlobalCitationCount")) {
 						addToAlltext(doc, stmt.getData());
 					}
 				}
