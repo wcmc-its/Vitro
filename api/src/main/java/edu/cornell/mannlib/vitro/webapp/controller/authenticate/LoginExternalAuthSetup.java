@@ -57,9 +57,7 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 			complainAndReturnToReferrer(req, resp, ATTRIBUTE_REFERRER,
 					messageLoginFailed(req));
 		}
-
 		log.info("redirecting to '" + redirectUrl + "'");
-		redirectUrl = "https://vivo-dev.weill.cornell.edu/loginExternalAuthReturn";
 		resp.sendRedirect(redirectUrl);
 	}
 
