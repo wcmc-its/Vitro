@@ -75,7 +75,10 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 
 	/** What is the URL of the LoginExternalAuthReturn servlet? */
 	private String buildReturnUrl(HttpServletRequest req) {
-		return figureHomePageUrl(req) + RETURN_SERVLET_URL;
+		String loginExternalAuthReturn = figureHomePageUrl(req) + RETURN_SERVLET_URL;
+		log.info("LoginExternalAuthReturn url : " + loginExternalAuthReturn);
+		//return figureHomePageUrl(req) + RETURN_SERVLET_URL;
+		return loginExternalAuthReturn.replace("http://", "https://");
 	}
 
 	private void dumpRequestHeaders(HttpServletRequest req) {
