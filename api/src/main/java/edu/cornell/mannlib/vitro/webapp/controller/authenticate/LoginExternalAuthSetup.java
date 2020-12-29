@@ -58,8 +58,8 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 					messageLoginFailed(req));
 		}
 
-		log.debug("redirecting to '" + redirectUrl + "'");
-		resp.sendRedirect(redirectUrl);
+		log.info("redirecting to '" + redirectUrl + "'");
+		resp.sendRedirect(redirectUrl.replace("http://", "https://"));
 	}
 
 	/** Remember where we came from - we'll need to go back there. */
@@ -75,10 +75,7 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 
 	/** What is the URL of the LoginExternalAuthReturn servlet? */
 	private String buildReturnUrl(HttpServletRequest req) {
-		String loginExternalAuthReturn = figureHomePageUrl(req) + RETURN_SERVLET_URL;
-		log.info("LoginExternalAuthReturn url : " + loginExternalAuthReturn);
-		//return figureHomePageUrl(req) + RETURN_SERVLET_URL;
-		return loginExternalAuthReturn.replace("http://", "https://");
+		return figureHomePageUrl(req) + RETURN_SERVLET_URL;
 	}
 
 	private void dumpRequestHeaders(HttpServletRequest req) {
