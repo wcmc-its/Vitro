@@ -59,7 +59,8 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 		}
 
 		log.info("redirecting to '" + redirectUrl + "'");
-		resp.sendRedirect(redirectUrl.replace("http://", "https://"));
+		redirectUrl = "https://vivo-dev.weill.cornell.edu/loginExternalAuthReturn";
+		resp.sendRedirect(redirectUrl);
 	}
 
 	/** Remember where we came from - we'll need to go back there. */
@@ -69,7 +70,7 @@ public class LoginExternalAuthSetup extends BaseLoginServlet {
 			dumpRequestHeaders(req);
 			referrer = figureHomePageUrl(req);
 		}
-		log.debug("Referring page is '" + referrer + "'");
+		log.info("Referring page is '" + referrer + "'");
 		req.getSession().setAttribute(ATTRIBUTE_REFERRER, referrer);
 	}
 
