@@ -243,7 +243,7 @@ public class RDFServiceTDB extends RDFServiceJena {
 	 * It also isn't scalable: if we wanted real scalability, we would write to
 	 * a temporary file as we converted.
 	 */
-	private InputStream adjustForIntegers(InputStream serializedGraph)
+	public static InputStream adjustForIntegers(InputStream serializedGraph)
 			throws RDFServiceException {
 		try {
 			String raw = IOUtils.toString(serializedGraph, "UTF-8");
@@ -255,7 +255,7 @@ public class RDFServiceTDB extends RDFServiceJena {
 		}
 	}
 
-	private final String integerPattern =
+	private static final String integerPattern =
 		"\\^\\^<http://www.w3.org/2001/XMLSchema#int>" + "|" +
 		"\\^\\^<http://www.w3.org/2001/XMLSchema#long>" + "|" +
 		"\\^\\^<http://www.w3.org/2001/XMLSchema#short>" + "|" +
