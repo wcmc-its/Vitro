@@ -68,6 +68,7 @@ import edu.cornell.mannlib.vitro.webapp.rdfservice.ResultSetConsumer;
 import edu.cornell.mannlib.vitro.webapp.rdfservice.impl.ChangeSetImpl;
 import edu.cornell.mannlib.vitro.webapp.rdfservice.impl.RDFServiceImpl;
 import edu.cornell.mannlib.vitro.webapp.rdfservice.impl.RDFServiceUtils;
+import edu.cornell.mannlib.vitro.webapp.rdfservice.impl.jena.tdb.RDFServiceTDB;
 import edu.cornell.mannlib.vitro.webapp.utils.http.HttpClientFactory;
 import edu.cornell.mannlib.vitro.webapp.utils.sparql.ResultSetIterators.ResultSetQuadsIterator;
 import edu.cornell.mannlib.vitro.webapp.utils.sparql.ResultSetIterators.ResultSetTriplesIterator;
@@ -908,7 +909,38 @@ public class RDFServiceSparql extends RDFServiceImpl implements RDFService {
 	public boolean isEquivalentGraph(String graphURI, Model graph) throws RDFServiceException {
 		Model tripleStoreModel = new RDFServiceDataset(this).getNamedModel(graphURI);
 		Model fromTripleStoreModel = ModelFactory.createDefaultModel().add(tripleStoreModel);
-		return graph.isIsomorphicWith(fromTripleStoreModel);
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		graph.write(buffer, "N-TRIPLE");
+		InputStream serializedModel = new ByteArrayInputStream(buffer.toByteArray());
+		InputStream serializedModelAdjusted = RDFServiceTDB.adjustForIntegers(serializedModel);
+		Model graphAdjusted = ModelFactory.createDefaultModel();
+		graphAdjusted.read(serializedModelAdjusted, null, "N-TRIPLE");
+		boolean isIsomorphic = graphAdjusted.isIsomorphicWith(fromTripleStoreModel);
+		if(!isIsomorphic) {
+            StringWriter sw = new StringWriter();       
+            Model onlyInFile = graphAdjusted.difference(fromTripleStoreModel);//noBlanks(graphAdjusted.difference(fromTripleStoreModel));
+            onlyInFile.write(sw, "N3");
+            log.info("Triples found in filegraph file but not present in corresponding graph: \n" + sw.toString());
+            sw = new StringWriter();
+            Model onlyInDB = fromTripleStoreModel.difference(graphAdjusted);//noBlanks(fromTripleStoreModel.difference(graphAdjusted));
+            onlyInDB.write(sw, "N3");
+            log.info("Triples found in triple store but not present in corresponding file: \n" + sw.toString());
+        }
+		return isIsomorphic;
+	}
+
+	private Model noBlanks(Model model) {
+	    Model out = ModelFactory.createDefaultModel();
+	    StmtIterator sit = model.listStatements();
+	    while(sit.hasNext()) {
+	        Statement stmt = sit.next();
+	        if(stmt.getSubject().isAnon() || stmt.getObject().isAnon()) {
+	            // filter out 
+	        } else {
+	            out.add(stmt);
+	        }
+	    }
+	    return out;
 	}
 
 	@Override
